@@ -17,7 +17,16 @@ interface Plays {
     [Key: string]: Play
 }
 
+interface StatementData {
+
+}
+
 export function statement(clientRequest: ClientRequest, plays: Plays) {
+    let data: StatementData = {}
+    return renderPlainText(data, clientRequest, plays);
+}
+
+function renderPlainText(data: StatementData, clientRequest: ClientRequest, plays: Plays) {
     let result = `Statement for ${clientRequest.customer}\n`
     result += statementsForPerformances(clientRequest, plays)
     result += `Amount owed is ${usd(totalAmount(clientRequest, plays) / 100)}\n`

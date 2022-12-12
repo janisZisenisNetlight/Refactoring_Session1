@@ -5,6 +5,11 @@ import java.util.Locale;
 import java.util.Map;
 public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
+        var statementData = new StatementData();
+        return renderPlainText(statementData, clientRequest, plays);
+    }
+
+    private static String renderPlainText(StatementData data, ClientRequest clientRequest, Map<String, Play> plays) {
         var result = "Statement for " + clientRequest.customer + "\n";
         result += statementsForPerformances(clientRequest, plays);
         result += "Amount owed is " + usd(totalAmount(clientRequest, plays)) + "\n";
