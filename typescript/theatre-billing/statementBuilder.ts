@@ -18,11 +18,12 @@ interface Plays {
 }
 
 interface StatementData {
-
+    customer: string;
+    performances: Performance[]
 }
 
 export function statement(clientRequest: ClientRequest, plays: Plays) {
-    let data: StatementData = {}
+    let data: StatementData = {customer: clientRequest.customer, performances: clientRequest.performances}
     return renderPlainText(data, clientRequest, plays);
 }
 

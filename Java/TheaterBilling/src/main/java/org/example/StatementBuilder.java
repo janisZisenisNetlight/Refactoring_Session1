@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
-        var statementData = new StatementData();
+        var statementData = new StatementData(clientRequest.customer, clientRequest.performances);
         return renderPlainText(statementData, clientRequest, plays);
     }
 
