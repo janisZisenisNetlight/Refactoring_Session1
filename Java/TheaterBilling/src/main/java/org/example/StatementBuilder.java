@@ -14,11 +14,7 @@ public class StatementBuilder {
             totalAmount += thisAmount;
         }
 
-        var volumeCredits = 0;
-        for (var perf: clientRequest.performances) {
-            var play = plays.get(perf.playId);
-            volumeCredits += volumeCreditsFor(perf, play);
-        }
+        var volumeCredits = totalVolumeCredits(clientRequest, plays);
 
 
         result += "Amount owed is " + usd(totalAmount) + "\n";
@@ -28,6 +24,15 @@ public class StatementBuilder {
 
     public static String usd(int amount) {
         return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
+    }
+
+    public static int totalVolumeCredits(ClientRequest clientRequest, Map<String, Play> plays) {
+        var result = 0;
+        for (var perf: clientRequest.performances) {
+            var play = plays.get(perf.playId);
+            result += volumeCreditsFor(perf, play);
+        }
+        return result;
     }
 
     public static int amountFor(Performance performance, Play play) {

@@ -31,13 +31,7 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
 
     }
 
-    let volumeCredits = 0;
-    for (let perf of clientRequest.performances) {
-        const play = plays[perf.playId];
-        // add volume credits
-        volumeCredits += volumeCreditsFor(perf, play)
-
-    }
+    let volumeCredits = totalVolumeCredits(clientRequest, plays)
 
     result += `Amount owed is ${usd(totalAmount / 100)}\n`
     result += `You earned ${volumeCredits} credits\n`
@@ -84,4 +78,14 @@ function usd(aNumber: number) {
         currency: "USD",
         minimumFractionDigits: 2
     }).format(aNumber)
+}
+
+function totalVolumeCredits(clientRequest: ClientRequest, plays: Plays){
+    let result = 0
+    for (let perf of clientRequest.performances) {
+        const play = plays[perf.playId];
+        // add volume credits
+        result += volumeCreditsFor(perf, play)
+    }
+    return result
 }
