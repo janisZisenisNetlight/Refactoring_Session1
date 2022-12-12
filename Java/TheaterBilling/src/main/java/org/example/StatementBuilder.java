@@ -6,11 +6,14 @@ import java.util.Map;
 public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
         var result = "Statement for " + clientRequest.customer + "\n";
+
+        String statementsForPerformances = "";
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
-            result += "  " + play.name + ": " + usd(amountFor(perf, play)) + " (" + perf.audience + ") seats\n";
+            statementsForPerformances += "  " + play.name + ": " + usd(amountFor(perf, play)) + " (" + perf.audience + ") seats\n";
         }
 
+        result += statementsForPerformances;
         result += "Amount owed is " + usd(totalAmount(clientRequest, plays)) + "\n";
         result += "You earned " + totalVolumeCredits(clientRequest, plays) + " credits\n";
         return result;

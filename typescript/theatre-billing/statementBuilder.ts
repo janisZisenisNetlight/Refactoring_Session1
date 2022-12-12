@@ -19,11 +19,12 @@ interface Plays {
 
 export function statement(clientRequest: ClientRequest, plays: Plays) {
     let result = `Statement for ${clientRequest.customer}\n`
+    let statementsForPerformances = ""
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
-        // print line for this order
-        result += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
+        statementsForPerformances += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
     }
+    result += statementsForPerformances
 
     result += `Amount owed is ${usd(totalAmount(clientRequest, plays) / 100)}\n`
     result += `You earned ${totalVolumeCredits(clientRequest, plays)} credits\n`
