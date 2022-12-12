@@ -14,11 +14,8 @@ public class StatementBuilder {
             totalAmount += thisAmount;
         }
 
-        var volumeCredits = totalVolumeCredits(clientRequest, plays);
-
-
         result += "Amount owed is " + usd(totalAmount) + "\n";
-        result += "You earned " + volumeCredits + " credits\n";
+        result += "You earned " + totalVolumeCredits(clientRequest, plays) + " credits\n";
         return result;
     }
 

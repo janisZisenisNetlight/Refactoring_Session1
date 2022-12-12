@@ -31,10 +31,8 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
 
     }
 
-    let volumeCredits = totalVolumeCredits(clientRequest, plays)
-
     result += `Amount owed is ${usd(totalAmount / 100)}\n`
-    result += `You earned ${volumeCredits} credits\n`
+    result += `You earned ${totalVolumeCredits(clientRequest, plays)} credits\n`
     return result
 }
 
