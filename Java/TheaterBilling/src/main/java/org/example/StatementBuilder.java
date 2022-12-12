@@ -8,7 +8,6 @@ public class StatementBuilder {
         var totalAmount = 0;
         var volumeCredits = 0;
         var result = "Statement for " + clientRequest.customer + "\n";
-        var currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
 
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
@@ -18,13 +17,17 @@ public class StatementBuilder {
             volumeCredits += volumeCreditsFor(perf, play);
 
             // print line for this order
-            result += "  " + play.name + ": " + currencyFormatter.format(thisAmount / 100) + " (" + perf.audience + ") seats\n";
+            result += "  " + play.name + ": " + usd(thisAmount) + " (" + perf.audience + ") seats\n";
             totalAmount += thisAmount;
         }
 
-        result += "Amount owed is " + currencyFormatter.format(totalAmount / 100) + "\n";
+        result += "Amount owed is " + usd(totalAmount) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
         return result;
+    }
+
+    public static String usd(int amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
     }
 
     public static int amountFor(Performance performance, Play play) {
@@ -58,5 +61,10 @@ public class StatementBuilder {
         // add extra credit for every ten comedy attendees
         if("comedy" == play.type) result += Math.floor(performance.audience / 5);
         return result;
+    }
+
+    public static String format(int number) {
+        var currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
+        return currencyFormatter.format(number / 100);
     }
 }
