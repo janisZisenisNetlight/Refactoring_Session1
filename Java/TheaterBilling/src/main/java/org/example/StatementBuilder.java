@@ -12,25 +12,7 @@ public class StatementBuilder {
 
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
-            var thisAmount = 0;
-
-            switch(play.type) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if(perf.audience > 30) {
-                        thisAmount += 1000 * (perf.audience - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = 30000;
-                    if(perf.audience > 20) {
-                        thisAmount += 10000 + 500 * (perf.audience - 20);
-                    }
-                    thisAmount += 300 * perf.audience;
-                    break;
-                default:
-                    throw new RuntimeException("unknown type: " + play.type);
-            }
+            var thisAmount = amountFor(perf, play);
 
             // add volume credits
             volumeCredits += Math.max(perf.audience - 30, 0);
@@ -45,5 +27,29 @@ public class StatementBuilder {
         result += "Amount owed is " + currencyFormatter.format(totalAmount / 100) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
         return result;
+    }
+
+    public static int amountFor(Performance perf, Play play) {
+        var thisAmount = 0;
+
+        switch(play.type) {
+            case "tragedy":
+                thisAmount = 40000;
+                if(perf.audience > 30) {
+                    thisAmount += 1000 * (perf.audience -30);
+                }
+                break;
+            case "comedy":
+                thisAmount = 30000;
+                if(perf.audience > 20) {
+                    thisAmount += 10000 + 500 * (perf.audience - 20);
+                }
+                thisAmount += 300 * perf.audience;
+                break;
+            default:
+                throw new RuntimeException("unknown type: " + play.type);
+        }
+
+        return thisAmount;
     }
 }
