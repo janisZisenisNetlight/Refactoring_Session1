@@ -11,6 +11,11 @@ public class StatementBuilder {
             var play = plays.get(perf.playId);
             var thisAmount = amountFor(perf, play);
             result += "  " + play.name + ": " + usd(thisAmount) + " (" + perf.audience + ") seats\n";
+        }
+
+        for (var perf: clientRequest.performances) {
+            var play = plays.get(perf.playId);
+            var thisAmount = amountFor(perf, play);
             totalAmount += thisAmount;
         }
 
