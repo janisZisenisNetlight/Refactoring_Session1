@@ -12,14 +12,15 @@ public class StatementBuilder {
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
             var thisAmount = amountFor(perf, play);
-
-            // add volume credits
-            volumeCredits += volumeCreditsFor(perf, play);
-
-            // print line for this order
             result += "  " + play.name + ": " + usd(thisAmount) + " (" + perf.audience + ") seats\n";
             totalAmount += thisAmount;
         }
+
+        for (var perf: clientRequest.performances) {
+            var play = plays.get(perf.playId);
+            volumeCredits += volumeCreditsFor(perf, play);
+        }
+
 
         result += "Amount owed is " + usd(totalAmount) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
