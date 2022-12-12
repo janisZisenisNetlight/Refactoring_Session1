@@ -25,9 +25,7 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
         result += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
     }
 
-    let totalAmount = appleSauce(clientRequest, plays)
-
-    result += `Amount owed is ${usd(totalAmount / 100)}\n`
+    result += `Amount owed is ${usd(totalAmount(clientRequest, plays) / 100)}\n`
     result += `You earned ${totalVolumeCredits(clientRequest, plays)} credits\n`
     return result
 }
@@ -84,7 +82,7 @@ function totalVolumeCredits(clientRequest: ClientRequest, plays: Plays) {
     return result
 }
 
-function appleSauce(clientRequest: ClientRequest, plays: Plays) {
+function totalAmount(clientRequest: ClientRequest, plays: Plays) {
     let result = 0;
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
