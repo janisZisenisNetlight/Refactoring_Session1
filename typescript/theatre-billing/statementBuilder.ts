@@ -24,14 +24,14 @@ interface StatementData {
 
 export function statement(clientRequest: ClientRequest, plays: Plays) {
     let data: StatementData = {customer: clientRequest.customer, performances: clientRequest.performances}
-    return renderPlainText(data, clientRequest, plays);
+    return renderPlainText(data, plays);
 }
 
-function renderPlainText(data: StatementData, clientRequest: ClientRequest, plays: Plays) {
-    let result = `Statement for ${clientRequest.customer}\n`
-    result += statementsForPerformances(clientRequest, plays)
-    result += `Amount owed is ${usd(totalAmount(clientRequest, plays) / 100)}\n`
-    result += `You earned ${totalVolumeCredits(clientRequest, plays)} credits\n`
+function renderPlainText(data: StatementData, plays: Plays) {
+    let result = `Statement for ${data.customer}\n`
+    result += statementsForPerformances(data, plays)
+    result += `Amount owed is ${usd(totalAmount(data, plays) / 100)}\n`
+    result += `You earned ${totalVolumeCredits(data, plays)} credits\n`
     return result
 }
 
@@ -77,9 +77,9 @@ function usd(aNumber: number) {
     }).format(aNumber)
 }
 
-function totalVolumeCredits(clientRequest: ClientRequest, plays: Plays) {
+function totalVolumeCredits(data: StatementData, plays: Plays) {
     let result = 0
-    for (let perf of clientRequest.performances) {
+    for (let perf of data.performances) {
         const play = plays[perf.playId];
         // add volume credits
         result += volumeCreditsFor(perf, play)
@@ -87,18 +87,18 @@ function totalVolumeCredits(clientRequest: ClientRequest, plays: Plays) {
     return result
 }
 
-function totalAmount(clientRequest: ClientRequest, plays: Plays) {
+function totalAmount(data: StatementData, plays: Plays) {
     let result = 0;
-    for (let perf of clientRequest.performances) {
+    for (let perf of data.performances) {
         const play = plays[perf.playId];
         result += amountFor(perf, play)
     }
     return result
 }
 
-function statementsForPerformances(clientRequest: ClientRequest, plays: Plays) {
+function statementsForPerformances(data: StatementData, plays: Plays) {
     let result = ""
-    for (let perf of clientRequest.performances) {
+    for (let perf of data.performances) {
         const play = plays[perf.playId];
         result += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
     }

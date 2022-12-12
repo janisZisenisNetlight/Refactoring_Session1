@@ -6,20 +6,20 @@ import java.util.Map;
 public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
         var statementData = new StatementData(clientRequest.customer, clientRequest.performances);
-        return renderPlainText(statementData, clientRequest, plays);
+        return renderPlainText(statementData, plays);
     }
 
-    private static String renderPlainText(StatementData data, ClientRequest clientRequest, Map<String, Play> plays) {
-        var result = "Statement for " + clientRequest.customer + "\n";
-        result += statementsForPerformances(clientRequest, plays);
-        result += "Amount owed is " + usd(totalAmount(clientRequest, plays)) + "\n";
-        result += "You earned " + totalVolumeCredits(clientRequest, plays) + " credits\n";
+    private static String renderPlainText(StatementData data, Map<String, Play> plays) {
+        var result = "Statement for " + data.customer + "\n";
+        result += statementsForPerformances(data, plays);
+        result += "Amount owed is " + usd(totalAmount(data, plays)) + "\n";
+        result += "You earned " + totalVolumeCredits(data, plays) + " credits\n";
         return result;
     }
 
-    private static String statementsForPerformances(ClientRequest clientRequest, Map<String, Play> plays) {
+    private static String statementsForPerformances(StatementData data, Map<String, Play> plays) {
         String result = "";
-        for (var perf: clientRequest.performances) {
+        for (var perf: data.performances) {
             var play = plays.get(perf.playId);
             result += "  " + play.name + ": " + usd(amountFor(perf, play)) + " (" + perf.audience + ") seats\n";
         }
@@ -27,9 +27,9 @@ public class StatementBuilder {
         return result;
     }
 
-    private static int totalAmount(ClientRequest clientRequest, Map<String, Play> plays) {
+    private static int totalAmount(StatementData data, Map<String, Play> plays) {
         var result = 0;
-        for (var perf: clientRequest.performances) {
+        for (var perf: data.performances) {
             var play = plays.get(perf.playId);
             result += amountFor(perf, play);
         }
@@ -40,9 +40,9 @@ public class StatementBuilder {
         return NumberFormat.getCurrencyInstance(Locale.US).format(amount / 100);
     }
 
-    public static int totalVolumeCredits(ClientRequest clientRequest, Map<String, Play> plays) {
+    public static int totalVolumeCredits(StatementData data, Map<String, Play> plays) {
         var result = 0;
-        for (var perf: clientRequest.performances) {
+        for (var perf: data.performances) {
             var play = plays.get(perf.playId);
             result += volumeCreditsFor(perf, play);
         }
