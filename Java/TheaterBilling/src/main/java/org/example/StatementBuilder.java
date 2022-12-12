@@ -18,7 +18,7 @@ public class StatementBuilder {
                 case "tragedy":
                     thisAmount = 40000;
                     if(perf.audience > 30) {
-                        thisAmount += 1000 * (perf.audience -30);
+                        thisAmount += 1000 * (perf.audience - 30);
                     }
                     break;
                 case "comedy":
@@ -38,13 +38,12 @@ public class StatementBuilder {
             if("comedy" == play.type) volumeCredits += Math.floor(perf.audience / 5);
 
             // print line for this order
-            result += "  " + play.name + ": " + currencyFormatter.format(thisAmount/100) + " (" + perf.audience + ") seats\n";
+            result += "  " + play.name + ": " + currencyFormatter.format(thisAmount / 100) + " (" + perf.audience + ") seats\n";
             totalAmount += thisAmount;
         }
 
-        result += "Amount owed is " + currencyFormatter.format(totalAmount/100) + "\n";
+        result += "Amount owed is " + currencyFormatter.format(totalAmount / 100) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
-
         return result;
     }
 }
