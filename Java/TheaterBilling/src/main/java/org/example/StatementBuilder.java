@@ -6,9 +6,7 @@ import java.util.Map;
 public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
         var totalAmount = 0;
-        var volumeCredits = 0;
         var result = "Statement for " + clientRequest.customer + "\n";
-
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
             var thisAmount = amountFor(perf, play);
@@ -16,6 +14,7 @@ public class StatementBuilder {
             totalAmount += thisAmount;
         }
 
+        var volumeCredits = 0;
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
             volumeCredits += volumeCreditsFor(perf, play);

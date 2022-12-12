@@ -19,7 +19,6 @@ interface Plays {
 
 export function statement(clientRequest: ClientRequest, plays: Plays) {
     let totalAmount = 0;
-    let volumeCredits = 0;
     let result = `Statement for ${clientRequest.customer}\n`
 
     for (let perf of clientRequest.performances) {
@@ -32,6 +31,7 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
 
     }
 
+    let volumeCredits = 0;
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
         // add volume credits
