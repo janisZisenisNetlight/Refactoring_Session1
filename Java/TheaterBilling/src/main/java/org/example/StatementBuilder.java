@@ -11,14 +11,19 @@ public class StatementBuilder {
             result += "  " + play.name + ": " + usd(amountFor(perf, play)) + " (" + perf.audience + ") seats\n";
         }
 
-        var totalAmount = 0;
-        for (var perf: clientRequest.performances) {
-            var play = plays.get(perf.playId);
-            totalAmount += amountFor(perf, play);
-        }
+        int totalAmount = appleSauce(clientRequest, plays);
 
         result += "Amount owed is " + usd(totalAmount) + "\n";
         result += "You earned " + totalVolumeCredits(clientRequest, plays) + " credits\n";
+        return result;
+    }
+
+    private static int appleSauce(ClientRequest clientRequest, Map<String, Play> plays) {
+        var result = 0;
+        for (var perf: clientRequest.performances) {
+            var play = plays.get(perf.playId);
+            result += amountFor(perf, play);
+        }
         return result;
     }
 
