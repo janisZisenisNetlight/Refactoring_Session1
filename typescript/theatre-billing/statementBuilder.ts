@@ -23,16 +23,13 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
 
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
-        let thisAmount = amountFor(perf, play)
-
         // print line for this order
-        result += ` ${play.name}: ${usd(thisAmount / 100)} (${perf.audience} seats)\n`
+        result += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
     }
 
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
-        let thisAmount = amountFor(perf, play)
-        totalAmount += thisAmount
+        totalAmount += amountFor(perf, play)
     }
 
     result += `Amount owed is ${usd(totalAmount / 100)}\n`

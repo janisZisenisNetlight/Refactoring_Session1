@@ -9,14 +9,12 @@ public class StatementBuilder {
         var result = "Statement for " + clientRequest.customer + "\n";
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
-            var thisAmount = amountFor(perf, play);
-            result += "  " + play.name + ": " + usd(thisAmount) + " (" + perf.audience + ") seats\n";
+            result += "  " + play.name + ": " + usd(amountFor(perf, play)) + " (" + perf.audience + ") seats\n";
         }
 
         for (var perf: clientRequest.performances) {
             var play = plays.get(perf.playId);
-            var thisAmount = amountFor(perf, play);
-            totalAmount += thisAmount;
+            totalAmount += amountFor(perf, play);
         }
 
         result += "Amount owed is " + usd(totalAmount) + "\n";
