@@ -15,9 +15,7 @@ public class StatementBuilder {
             var thisAmount = amountFor(perf, play);
 
             // add volume credits
-            volumeCredits += Math.max(perf.audience - 30, 0);
-            // add extra credit for every ten comedy attendees
-            if("comedy" == play.type) volumeCredits += Math.floor(perf.audience / 5);
+            volumeCredits += volumeCreditsFor(perf, play);
 
             // print line for this order
             result += "  " + play.name + ": " + currencyFormatter.format(thisAmount / 100) + " (" + perf.audience + ") seats\n";
@@ -50,6 +48,15 @@ public class StatementBuilder {
                 throw new RuntimeException("unknown type: " + play.type);
         }
 
+        return result;
+    }
+
+    public static int volumeCreditsFor(Performance performance, Play play) {
+        var result = 0;
+        // add volume credits
+        result += Math.max(performance.audience - 30, 0);
+        // add extra credit for every ten comedy attendees
+        if("comedy" == play.type) result += Math.floor(performance.audience / 5);
         return result;
     }
 }

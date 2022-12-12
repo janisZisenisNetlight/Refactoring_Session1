@@ -32,9 +32,7 @@ export function statement(clientRequest: ClientRequest, plays: Plays) {
         let thisAmount = amountFor(perf, play)
 
         // add volume credits
-        volumeCredits += Math.max(perf.audience - 30, 0);
-        //  add extra credit for every ten comedy attendees
-        if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5)
+        volumeCredits += volumeCreditsFor(perf, play)
 
         // print line for this order
         result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`
@@ -66,6 +64,16 @@ function amountFor(aPerformance: Performance, play: Play) {
         default:
             throw new Error(`unkown type: ${play.type}`)
     }
+
+    return result
+}
+
+function volumeCreditsFor(aPerformance: Performance, play: Play) {
+    let result = 0
+    // add volume credits
+    result += Math.max(aPerformance.audience - 30, 0);
+    //  add extra credit for every ten comedy attendees
+    if ("comedy" === play.type) result += Math.floor(aPerformance.audience / 5)
 
     return result
 }
