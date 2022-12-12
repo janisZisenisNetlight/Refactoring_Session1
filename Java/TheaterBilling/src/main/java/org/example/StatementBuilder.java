@@ -7,7 +7,6 @@ public class StatementBuilder {
     public static String statement(ClientRequest clientRequest, Map<String, Play> plays) {
         var totalAmount = 0;
         var volumeCredits = 0;
-
         var result = "Statement for " + clientRequest.customer + "\n";
         var currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
 

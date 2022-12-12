@@ -1,7 +1,6 @@
 import {statement} from "./statementBuilder";
-import plays from "./plays.json"
-import invoices from "./invoices.json"
+import availablePlays from "./availablePlays.json"
+import clientRequest from "./clientRequest.json"
 
-const state = statement(invoices, plays)
-
+const state = statement(clientRequest, availablePlays)
 console.log(state)

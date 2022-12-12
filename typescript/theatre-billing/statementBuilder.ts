@@ -1,4 +1,4 @@
-interface Invoice {
+interface ClientRequest {
     customer: string;
     performances: Performance[];
 }
@@ -17,17 +17,17 @@ interface Plays {
     [Key: string]: Play
 }
 
-export function statement(invoice: Invoice, plays: Plays) {
+export function statement(clientRequest: ClientRequest, plays: Plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
-    let result = `Statement for ${invoice.customer}\n`
+    let result = `Statement for ${clientRequest.customer}\n`
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
         minimumFractionDigits: 2
     }).format;
 
-    for (let perf of invoice.performances) {
+    for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
         let thisAmount = 0;
 
@@ -41,7 +41,7 @@ export function statement(invoice: Invoice, plays: Plays) {
             case "comedy":
                 thisAmount = 30000;
                 if (perf.audience > 20) {
-                    thisAmount += 1000 + 500 * (perf.audience - 20)
+                    thisAmount += 10000 + 500 * (perf.audience - 20)
                 }
                 thisAmount += 300 * perf.audience;
                 break;
