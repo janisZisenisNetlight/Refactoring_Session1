@@ -18,15 +18,14 @@ interface Plays {
 }
 
 export function statement(clientRequest: ClientRequest, plays: Plays) {
-    let totalAmount = 0;
     let result = `Statement for ${clientRequest.customer}\n`
-
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
         // print line for this order
         result += ` ${play.name}: ${usd(amountFor(perf, play) / 100)} (${perf.audience} seats)\n`
     }
 
+    let totalAmount = 0;
     for (let perf of clientRequest.performances) {
         const play = plays[perf.playId];
         totalAmount += amountFor(perf, play)
